@@ -1,4 +1,4 @@
-//RESTAURANT MANAGEMENT
+//RESTAURANT 
 #include<iostream>
 #include<cstdlib>
 #include<cstring>
@@ -14,7 +14,7 @@ struct node{//declare the node.
     struct node *next;
 };
 
-struct node *headc=NULL,*newnode,*tailc=NULL,*heada=NULL,*heads;
+struct node *headc=NULL,*newnode,*tailc=NULL,*heada=NULL,*taila=NULL,*heads;
 
 void adminmenu(){
     printf("\n\t\t\t\t\t\t\t\t1. View Total sales\n");
@@ -42,10 +42,11 @@ struct node* createadmin(int data,string fname,float price){//create admin and a
     struct node *temp=heada;
     if(temp==NULL){
         heada=newnode;
+        taila=newnode;
         return heada;
     }
-    while(temp->next!=NULL)temp=temp->next;
-    temp->next=newnode;
+    taila->next=newnode;
+    taila=newnode;
     return heada;
 }
 struct node *createcustomer(int data,int quantity){// add item in the customer list
@@ -78,29 +79,8 @@ struct node *createcustomer(int data,int quantity){// add item in the customer l
      else printf("\n\t\t\t\t\t\t\tThere is no such item in menu");
      return headc;
 }
-void displaylistcu(){//display customer's list 
-    struct node *temp=headc;
-    if(temp==NULL){
-        printf("\n\t\t\t\t\t\t\t\t List is empty");
-        return;
-    }
-    printf("\n");
-    while(temp!=NULL){
-            cout << temp->data;
-            printf("\t");
-            cout << temp->foodname;
-            printf("\t");
-            cout << temp->quantity;
-            printf("\t");
-            cout << temp->price;
-            printf("\n");
-        temp=temp->next;
-    }
-    printf("\n");
-    return ;
-}
-void displaylists(){//display total sales history
-    struct node *temp=heads;
+void displaylist(struct node* head){//display total sales history
+    struct node *temp=head;
     if(temp==NULL){
         printf("\n\t\t\t\t\t\t\t\t List is empty");
         return;
@@ -196,7 +176,7 @@ int deleteadminorcust(struct node *head){//for deleteion of item
     return 1;
 }
 void dispalybill(){//to display bill
-    displaylistcu();
+    displaylist(headc);
     struct node *temp=headc;
     float tprice=0;
     while(temp!=NULL){
@@ -229,7 +209,7 @@ void admin(){
         if(opt==5)break;
         switch(opt){
             case 1:
-                displaylists();
+                displaylist(heads);
                 break;
             case 2:
                 printf("\n\t\t\t\tEnter serial number of food item");
@@ -292,12 +272,12 @@ void cust(){
                 break;
             case 2:
                 printf("\n\t\t\tList of ordered items are");
-                displaylistcu();
+                displaylist(headc);
                 break;
             case 3:
                 if(deleteadminorcust(headc)){
                     printf("\n\t\t\t Updated list is");
-                    displaylistcu();
+                    displaylist(headc);
                 }
                 else printf("\n\t\t\tNo such serial number exists");
             case 4:
